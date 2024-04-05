@@ -1,6 +1,6 @@
 # DesClientSider (DCS)
 
-DesClientSider (ou DCS) é uma ferramenta em Java projetada para ajudar  a detectar possíveis mods client-side de forma eficiente, desativando automaticamente aqueles que não são compatíveis com servidores específicos. 
+DesClientSider (ou DCS) é uma ferramenta em Java projetada para ajudar  a detectar possíveis mods client-side de forma eficiente, desativando automaticamente aqueles que não são compatíveis com servidores.
 
 O DCS compara os nomes dos arquivos de mods com uma lista de palavras-chave e move os arquivos correspondentes para uma pasta designada, desativando-os efetivamente.
 
