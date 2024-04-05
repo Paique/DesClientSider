@@ -163,17 +163,15 @@ public class Sftp {
                 if (remove.equals("y")) {
                     remove = "";
                     boolean removeAll = false;
+                    channelSftp.mkdir("client");
                     for (String mod : clientSideMods) {
                         try {
-                            channelSftp.mkdir("client");
 
                             SftpATTRS attrs;
                             try {
-                                attrs = channelSftp.stat("mods/client");
+                                attrs = channelSftp.stat("mods/client/" + mod);
                             } catch (Exception e) {
-                                System.out.println("Moving to client folder: " + mod);
-                                channelSftp.rename("mods/" + mod, "mods/client/" + mod);
-                                continue;
+                                attrs = null;
                             }
 
                             if (attrs != null) {
@@ -187,13 +185,17 @@ public class Sftp {
                                     channelSftp.rm("mods/" + mod);
                                     System.out.println("File removed: " + mod);
                                 }
+                                continue;
                             }
+
+                            System.out.println("Moving to client folder: " + mod);
+                            channelSftp.rename("mods/" + mod, "mods/client/" + mod);
 
                         } catch (SftpException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    System.out.println("All detected client-side mods are moved to a new folder named client.");
+                    System.out.println("All detected client-side mods are moved to a new folder named client, or removed if prompted.");
                 } else {
                     System.out.println("Not removing the mods and exiting...");
                     System.exit(0);
