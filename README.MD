@@ -24,6 +24,8 @@ O DCS compara os nomes dos arquivos de mods com uma lista de palavras-chave e mo
 Adicionalmente é possível utilizar a senha definindo o arg PASSWORD no console:
 ![](https://i.imgur.com/HFP8QfK.png)
 
+-   **JavaAgent**: Pode ser executado como um JavaAgent juntamente do servidor para que remova os mods antes do servidor iniciar.
+
 ## Requisitos do Sistema
 
 -   Java 17 ou superior.
@@ -34,9 +36,11 @@ Adicionalmente é possível utilizar a senha definindo o arg PASSWORD no console
 2.  Tenha o java instalado
 3.  Execute o arquivo JAR do DCS.
 
-## Exemplo de Uso
+## Exemplos de Uso
 
 `java -jar DesClientSider.jar` 
+
+`java -javaagent:DesClientSider-1.1.2-all.jar -jar server.jar --nogui` 
 
 Após selecionar as opções desejadas o DCS analisará os arquivos de mods, desativará aqueles que correspondem às palavras-chave especificadas e os moverá para a nova pasta criada "client".
 
