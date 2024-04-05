@@ -52,7 +52,7 @@ public class Local {
             List<String> clientSideMods = new ArrayList<>();
 
             keywords.forEach(keyword -> mods.forEach(mod -> {
-                if (mod.toLowerCase().contains(keyword)) {
+                if (mod.toLowerCase().contains(keyword) && mod.toLowerCase().endsWith(".jar")) {
                     clientSideMods.add(mod);
                 }
             }));
