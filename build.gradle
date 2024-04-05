@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'net.paiique.dcs'
-version = '1.0-SNAPSHOT'
+version = '1.1.2'
 
 repositories {
     mavenCentral()
@@ -22,7 +22,15 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'net.paiique.dcs.Main'
+        attributes (
+                'Main-Class': 'net.paiique.dcs.Main',
+                'Premain-Class': 'net.paiique.dcs.Agent',
+                'Can-Redefine-Classes': 'true',
+                'Can-Retransform-Classes': 'true',
+                'Can-Set-Native-Method-Prefix': 'true',
+                'Implementation-Title': "DCS",
+                'Implementation-Version': rootProject.version
+        )
     }
 }
 

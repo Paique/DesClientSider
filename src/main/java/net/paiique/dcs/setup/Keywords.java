@@ -1,6 +1,7 @@
 package net.paiique.dcs.setup;
 
 import net.paiique.dcs.Main;
+import net.paiique.dcs.util.TextFileUtils;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -19,7 +20,7 @@ public class Keywords {
 
         if (inputStream == null) throw new RuntimeException("Falied while getting client mods keywords.");
 
-        return Main.textFileUtils.read(inputStream);
+        return new TextFileUtils().read(inputStream);
     }
 
     public Path getKeywordFile() {

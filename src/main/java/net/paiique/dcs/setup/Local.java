@@ -1,15 +1,14 @@
 package net.paiique.dcs.setup;
 
 import net.paiique.dcs.Main;
+import net.paiique.dcs.util.TextFileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -31,28 +30,33 @@ public class Local {
         return modList;
     }
 
-    public boolean execute() {
+    public boolean execute(boolean skipVerification) throws URISyntaxException {
         Path path;
         Scanner reader = new Scanner(System.in);
-        boolean alwaysRemove = false;
 
-        System.out.print("Path to mods folder (Example: /home/paique/server/mods or C:\\Users\\paique\\server\\mods): ");
-        path = Path.of(reader.next());
+        if (!skipVerification){
+            System.out.print("Path to mods folder (Example: /home/paique/server/mods or C:\\Users\\paique\\server\\mods): ");
+            path = Path.of(reader.next());
+        } else {
+            path = Path.of(new File(Local.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent() + "/mods/");
+        }
 
+        System.out.println(path);
         if (Files.exists(path) && Files.isDirectory(path)) {
             List<String> mods = listFilesUsingFilesList(path);
+
             if (mods == null) {
                 LOGGER.log(Level.SEVERE, "Error! The mod array is null!");
                 System.out.println("Restarting...");
                 return false;
             }
 
-            List<String> keywords = Main.textFileUtils.read(Main.keywords.getKeywordFile());
+            List<String> keywords = new TextFileUtils().read(new Keywords().getKeywordFile());
 
             List<String> clientSideMods = new ArrayList<>();
 
             keywords.forEach(keyword -> mods.forEach(mod -> {
-                if (mod.toLowerCase().contains(keyword) && mod.toLowerCase().endsWith(".jar")) {
+                if (mod.toLowerCase().contains(keyword)) {
                     clientSideMods.add(mod);
                 }
             }));
@@ -63,12 +67,18 @@ public class Local {
 
 
                 System.out.println(clientSideMods.size() + " client-side mods detected!");
-                System.out.println(clientSideMods);
-                System.out.print("\nDisable mods? (y/n): ");
-                String remove = reader.next();
+
+                String remove = "";
+
+                if (!skipVerification) {
+                    System.out.println(clientSideMods);
+                    System.out.print("\nDisable mods? (y/n): ");
+                    remove = reader.next();
+                }
 
                 List<String> notRemoved = new ArrayList<>();
-                if (remove.equalsIgnoreCase("y")) {
+                if (remove.equalsIgnoreCase("y") || skipVerification) {
+                    remove = "";
                     try {
                         Path clientFolder = Path.of(path + "/client");
                         if (!Files.exists(clientFolder)) Files.createDirectory(clientFolder);
@@ -77,12 +87,12 @@ public class Local {
                             Path target = Path.of(clientFolder + "/" + mod);
                             Path source = Path.of(path + "/" + mod);
                             if (Files.exists(target)) {
-                                if (!alwaysRemove) {
+                                if (!skipVerification) {
                                     System.out.print("File " + mod + " already exists in the client folder, delete it? (y/n/a) (a for all): ");
                                     remove = reader.next().toLowerCase();
                                 }
-                                if (remove.equals("a") || remove.equals("all")) alwaysRemove = true;
-                                if (remove.equals("y") || remove.equals("yes") || alwaysRemove) {
+                                if (remove.equals("a") || remove.equals("all")) skipVerification = true;
+                                if (remove.equals("y") || remove.equals("yes") || skipVerification) {
                                     Files.delete(source);
                                     System.out.println("File " + mod + " deleted.");
                                 } else {
@@ -106,7 +116,7 @@ public class Local {
 
                 }
             } else {
-                LOGGER.log(Level.SEVERE, "The directory is empty.");
+                LOGGER.log(Level.SEVERE, "The directory is empty, or any client-side mod was detected.");
             }
             return true;
 

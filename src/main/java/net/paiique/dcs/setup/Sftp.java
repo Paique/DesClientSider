@@ -2,6 +2,7 @@ package net.paiique.dcs.setup;
 
 import com.jcraft.jsch.*;
 import net.paiique.dcs.Main;
+import net.paiique.dcs.util.TextFileUtils;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -46,7 +47,7 @@ public class Sftp {
                 port = Integer.parseInt(parsedHost[1]);
             }
 
-            List<String> hosts = Main.textFileUtils.read(knownHostsFile);
+            List<String> hosts = new TextFileUtils().read(knownHostsFile);
 
             System.out.println("Scanning host key, and adding to known_hosts if necessary.");
             for (String knowHost : hosts) {
@@ -129,7 +130,7 @@ public class Sftp {
     }
 
 
-    public boolean execute() {
+    public boolean execute(boolean skipVerification) {
         ChannelSftp channelSftp = new Sftp().getFilesFromSftp();
         Scanner reader = new Scanner(System.in);
 
@@ -142,7 +143,7 @@ public class Sftp {
             System.out.println("Getting mods from the server...");
             List<ChannelSftp.LsEntry> mods = channelSftp.ls("mods").stream().toList();
 
-            List<String> keywords = Main.textFileUtils.read(Main.keywords.getKeywordFile());
+            List<String> keywords = new TextFileUtils().read(new Keywords().getKeywordFile());
 
             System.out.println(keywords.size() + " keywords loaded.");
             System.out.println(mods.size() + " mods detected.");
@@ -157,12 +158,15 @@ public class Sftp {
                 System.out.println(clientSideMods);
                 System.out.println(clientSideMods.size() + " client-side mods detected!");
 
-                System.out.print("\nDisable mods? (y/n): ");
-                String remove = reader.next();
+                String remove = "";
+                if (!skipVerification) {
+                    System.out.print("\nDisable mods? (y/n): ");
+                    remove = reader.next();
+                }
 
-                if (remove.equals("y")) {
+                if (remove.equals("y") || skipVerification) {
                     remove = "";
-                    boolean removeAll = false;
+
                     channelSftp.mkdir("client");
                     for (String mod : clientSideMods) {
                         try {
@@ -175,13 +179,13 @@ public class Sftp {
                             }
 
                             if (attrs != null) {
-                                if (!removeAll) {
+                                if (!skipVerification) {
                                     System.out.print("File" + mod + " already exists, remove? (y/n/a) (a = all)");
                                     remove = reader.next().toLowerCase();
                                 }
 
-                                if (remove.equals("a")) removeAll = true;
-                                if (remove.equals("y") || remove.equals("yes") || removeAll) {
+                                if (remove.equals("a")) skipVerification = true;
+                                if (remove.equals("y") || remove.equals("yes") || skipVerification) {
                                     channelSftp.rm("mods/" + mod);
                                     System.out.println("File removed: " + mod);
                                 }
