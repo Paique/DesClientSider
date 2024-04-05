@@ -24,7 +24,8 @@ craftify
 deathlog
 durabilityviewer
 easierchests
-essential
+essential-fabric_
+essential-forge_
 fabrishot
 farsight
 fpsdisplay
