@@ -1,6 +1,7 @@
 package net.paiique.dcs;
 
 import com.jcraft.jsch.JSchException;
+import net.paiique.dcs.setup.Keywords;
 import net.paiique.dcs.setup.Local;
 import net.paiique.dcs.setup.Sftp;
 import net.paiique.dcs.util.TextFileUtils;
@@ -13,9 +14,11 @@ public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     public static TextFileUtils textFileUtils;
+    public static Keywords keywords;
     public static void main(String[] args) throws JSchException {
 
         textFileUtils = new TextFileUtils();
+        keywords = new Keywords();
 
         System.out.println("DCS v1");
 

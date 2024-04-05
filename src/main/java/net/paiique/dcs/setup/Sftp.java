@@ -142,7 +142,7 @@ public class Sftp {
             System.out.println("Getting mods from the server...");
             List<ChannelSftp.LsEntry> mods = channelSftp.ls("mods").stream().toList();
 
-            List<String> keywords = Main.textFileUtils.read(Path.of("keywords.txt"));
+            List<String> keywords = Main.textFileUtils.read(Main.keywords.getKeywordFile());
 
             System.out.println(keywords.size() + " keywords loaded.");
             System.out.println(mods.size() + " mods detected.");

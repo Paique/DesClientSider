@@ -22,7 +22,7 @@ public class Keywords {
         return Main.textFileUtils.read(inputStream);
     }
 
-    private Path getKeywordFile() {
+    public Path getKeywordFile() {
         try {
             String path = String.valueOf(Paths.get(Keywords.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile().getParentFile());
 

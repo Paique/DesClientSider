@@ -47,7 +47,7 @@ public class Local {
                 return false;
             }
 
-            List<String> keywords = Main.textFileUtils.read(Path.of("keywords.txt"));
+            List<String> keywords = Main.textFileUtils.read(Main.keywords.getKeywordFile());
 
             List<String> clientSideMods = new ArrayList<>();
 
