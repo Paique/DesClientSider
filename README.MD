@@ -5,6 +5,9 @@ DesClientSider (or DCS) is a Java tool designed to efficiently detect potential 
 
 DCS compares mod file names with a list of keywords and moves corresponding files to a designated folder, effectively disabling them.
 
+Check out the DCS API project!
+[DesClientSider-API: Simple API for DCS in GoLang](https://github.com/Paique/DesClientSider-API)
+
 ## Features
 
 - **Automatic Mod Disabling**: DCS detects client-side mods incompatible with specific servers and automatically disables them, moving them to a separate folder.
