@@ -148,13 +148,25 @@ public class Sftp {
             System.out.println("Connected to SFTP!");
 
             System.out.println("Getting mods from the server...");
-            List<ChannelSftp.LsEntry> mods = channelSftp.ls("mods").stream().toList();
+
+            List<ChannelSftp.LsEntry> mods = null;
+
+            try {
+                mods = channelSftp.ls("mods").stream().toList();
+            } catch (SftpException e) {
+                System.out.println("Could not get the mods from server!");
+                System.out.println("Check if the mods folder exists.");
+                System.exit(1);
+            }
+            //Todo: Fix this later
+            List<ChannelSftp.LsEntry> finalMods = mods;
 
             System.out.println(keywords.size() + " keywords loaded.");
-            System.out.println(mods.size() + " mods detected.");
+            System.out.println(finalMods.size() + " mods detected.");
 
             List<String> clientSideMods = new ArrayList<>();
-            keywords.forEach(keyword -> mods.forEach(modFile -> {
+
+            keywords.forEach(keyword -> finalMods.forEach(modFile -> {
                 String mod = modFile.getFilename().toLowerCase();
                 contraKeywords.forEach(contraKeyword -> {
                     if (mod.contains(keyword) && !mod.contains(contraKeyword)) {
