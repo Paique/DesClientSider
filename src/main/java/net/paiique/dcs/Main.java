@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class Main {
-    public static void main(String[] args) throws JSchException, URISyntaxException {
+    public static void main(String[] args) throws URISyntaxException {
 
         System.out.println("DCS v1");
         Keywords keywords = new Keywords();

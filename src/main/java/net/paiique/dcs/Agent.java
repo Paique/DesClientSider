@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 public class Agent {
-    public static void premain(String args, Instrumentation instrumentation) throws JSchException, URISyntaxException {
+    public static void premain(String args, Instrumentation instrumentation) throws URISyntaxException {
         Keywords keywords = new Keywords();
         List<String> positiveKeywords = keywords.getKeys();
         List<String> contraKeywords = keywords.getContraKeys();
