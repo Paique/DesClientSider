@@ -163,8 +163,7 @@ public class Sftp {
             List<String> clientSideMods = new ArrayList<>();
 
             keywords.forEach(keyword -> finalMods.forEach(modFile -> {
-                String mod = modFile.getFilename().toLowerCase();
-                System.out.println(mod);
+                String mod = modFile.getFilename();
                 contraKeywords.forEach(contraKeyword -> {
                     if (mod.contains(keyword) && !mod.contains(contraKeyword)) {
                         clientSideMods.add(mod);
@@ -185,6 +184,7 @@ public class Sftp {
                 if (remove.equals("y") || skipVerification) {
                     remove = "";
 
+
                     channelSftp.mkdir("mods/client");
                     for (String mod : clientSideMods) {
                         try {
@@ -204,7 +204,7 @@ public class Sftp {
 
                                 if (remove.equals("a")) skipVerification = true;
                                 if (remove.equals("y") || remove.equals("yes") || skipVerification) {
-                                    channelSftp.rm("mods/" + mod);
+                                    channelSftp.rm(mod);
                                     System.out.println("File removed: " + mod);
                                 }
                                 continue;
