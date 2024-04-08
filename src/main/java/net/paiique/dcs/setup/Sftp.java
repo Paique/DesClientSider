@@ -14,12 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Sftp {
-
-    private static final Logger LOGGER = Logger.getLogger(Sftp.class.getName());
 
     private ChannelSftp getFilesFromSftp() {
 
@@ -89,7 +85,7 @@ public class Sftp {
             System.out.println("Done!");
 
             Session jschSession = jSch.getSession(username, host);
-            java.util.Properties config = new java.util.Properties();
+            Properties config = new Properties();
 
             config.put("StrictHostKeyChecking", "no");
             jschSession.setConfig(config);
@@ -130,7 +126,7 @@ public class Sftp {
 
             return (ChannelSftp) jschSession.openChannel("sftp");
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error while executing Sftp class: " + e);
+            e.printStackTrace();
         }
         return null;
     }
@@ -236,7 +232,7 @@ public class Sftp {
             return true;
 
         } catch (JSchException | SftpException e) {
-            LOGGER.log(Level.SEVERE, "Falied while executing Main class: " + e);
+            e.printStackTrace();
             return false;
         }
     }

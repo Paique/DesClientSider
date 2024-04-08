@@ -8,11 +8,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Local {
-    private static final Logger LOGGER = Logger.getLogger(Local.class.getName());
 
     private List<String> listFilesUsingFilesList(Path modsPath) {
 
@@ -43,7 +40,7 @@ public class Local {
             List<String> mods = listFilesUsingFilesList(path);
 
             if (mods == null) {
-                LOGGER.log(Level.SEVERE, "Error! The mod array is null!");
+                System.out.println("Error! The mod array is null!");
                 System.out.println("Restarting...");
                 return false;
             }
