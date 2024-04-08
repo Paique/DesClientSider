@@ -1,10 +1,13 @@
 package net.paiique.dcs.setup;
 
+import com.google.gson.*;
 import net.paiique.dcs.Main;
 import net.paiique.dcs.util.TextFileUtils;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,41 +16,40 @@ import java.util.List;
 
 public class Keywords {
 
-    private List<String> getDefaultKeys() {
-        InputStream inputStream = Keywords.class
-                .getClassLoader()
-                .getResourceAsStream("badmods.txt");
-
-        if (inputStream == null) throw new RuntimeException("Falied while getting client mods keywords.");
-
-        return new TextFileUtils().read(inputStream);
+    public List<String> getKeys() {
+        System.out.println("Loading keywords from DCS API");
+        return requestKeywords("http://api.dcs.paiique.net:8080/keywords");
     }
 
-    public Path getKeywordFile() {
+    public List<String> getContraKeys() {
+        System.out.println("Loading Contra-keywords from DCS API");
+        return requestKeywords("http://api.dcs.paiique.net:8080/contra");
+    }
+
+
+    private List<String> requestKeywords(String uri) {
+        List<String> keys = new ArrayList<>();
+
         try {
-            String path = String.valueOf(Paths.get(Keywords.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile().getParentFile());
+            URLConnection request = new URL(uri).openConnection();
+            request.connect();
+            InputStreamReader inputStream = new InputStreamReader((InputStream) request.getContent());
 
-            Path keywordsPath = Path.of(path + "/keywords.txt");
+            JsonElement parser = JsonParser.parseReader(inputStream);
 
-            if (!Files.exists(keywordsPath)) {
-                System.out.println("Generating Keywords file...");
-                Files.createFile(keywordsPath);
+            JsonArray jsonArray = parser.getAsJsonArray();
 
-                FileWriter writer = new FileWriter(keywordsPath.toFile());
+            jsonArray.forEach(jsonElement -> {
+                String key = jsonElement.getAsJsonObject().get("keyword").getAsString();
+                keys.add(key);
+            });
 
-                for (String key : getDefaultKeys()) {
-                    writer.append(key).append("\n");
-                }
-                writer.close();
-                return keywordsPath;
-            }
-
-            System.out.println("Keyword file detected!");
-            return keywordsPath;
-
-        } catch (URISyntaxException | IOException e) {
-            throw new RuntimeException(e);
+            return keys;
+        } catch (IOException e) {
+            System.out.println("Error while loading keywords from DCS API");
+            e.printStackTrace();
+            System.exit(1);
         }
+        return null;
     }
-
 }

@@ -1,18 +1,15 @@
 package net.paiique.dcs.setup;
 
-import net.paiique.dcs.Main;
-import net.paiique.dcs.util.TextFileUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Local {
     private static final Logger LOGGER = Logger.getLogger(Local.class.getName());
@@ -30,7 +27,7 @@ public class Local {
         return modList;
     }
 
-    public boolean execute(boolean skipVerification) throws URISyntaxException {
+    public boolean execute(boolean skipVerification, List<String> keywords, List<String> contraKeywords) throws URISyntaxException {
         Path path;
         Scanner reader = new Scanner(System.in);
 
@@ -51,21 +48,18 @@ public class Local {
                 return false;
             }
 
-            List<String> keywords = new TextFileUtils().read(new Keywords().getKeywordFile());
-
             List<String> clientSideMods = new ArrayList<>();
 
             keywords.forEach(keyword -> mods.forEach(mod -> {
-                if (mod.toLowerCase().contains(keyword)) {
-                    clientSideMods.add(mod);
-                }
+                contraKeywords.forEach(contraKeyword -> {
+                    if (mod.toLowerCase().contains(keyword) && !mod.toLowerCase().contains(contraKeyword)) {
+                        clientSideMods.add(mod);
+                    }
+                });
             }));
 
             if (!clientSideMods.isEmpty()) {
-                System.out.println(keywords.size() + " keywords loaded.");
                 System.out.println(mods.size() + " mods detected.");
-
-
                 System.out.println(clientSideMods.size() + " client-side mods detected!");
 
                 String remove = "";
@@ -113,15 +107,14 @@ public class Local {
                         System.out.println(notRemoved.size() + " file(s) not removed:");
                         notRemoved.forEach(System.out::println);
                     }
-
                 }
             } else {
-                LOGGER.log(Level.SEVERE, "The directory is empty, or any client-side mod was detected.");
+                System.out.println("The directory is empty, or any client-side mod was detected.");
             }
             return true;
 
         } else {
-            LOGGER.log(Level.SEVERE, "The path " + path + " does not exist, or it's not a directory.");
+            System.out.println("The path " + path + " does not exist, or it's not a directory.");
             return false;
         }
     }

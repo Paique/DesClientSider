@@ -1,7 +1,11 @@
 package net.paiique.dcs.setup;
 
-import com.jcraft.jsch.*;
-import net.paiique.dcs.Main;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpATTRS;
+import com.jcraft.jsch.SftpException;
 import net.paiique.dcs.util.TextFileUtils;
 
 import java.io.*;
@@ -26,7 +30,8 @@ public class Sftp {
             JSch jSch = new JSch();
             Path knownHostsFile = Path.of(System.getProperty("user.home") + "/.ssh/known_hosts");
 
-            if (!knownHostsFile.toFile().exists()) throw new FileNotFoundException("known_hosts does not exist in the .ssh folder!");
+            if (!knownHostsFile.toFile().exists())
+                throw new FileNotFoundException("known_hosts does not exist in the .ssh folder!");
 
             jSch.setKnownHosts(knownHostsFile.toString());
             Scanner reader = new Scanner(System.in);
@@ -57,14 +62,14 @@ public class Sftp {
                     List<String> cmds = new ArrayList<>();
                     String os = System.getProperty("os.name").toLowerCase();
 
-                    cmds.add(os.equals("windows") ? "/bin/bash" :  "cmd");
+                    cmds.add(os.equals("windows") ? "/bin/bash" : "cmd");
                     cmds.add(os.equals("windows") ? "-c" : "/C");
                     cmds.add("ssh-keyscan");
                     cmds.add("-H");
                     cmds.add("-p");
                     cmds.add(String.valueOf(port));
                     cmds.add("-t");
-                    cmds.add("ed25519");
+                    cmds.add("ed25519"); //Todo: This is not right, needs revision.
                     cmds.add(host);
                     processBuilder.command(cmds);
                     processBuilder.inheritIO();
@@ -130,30 +135,33 @@ public class Sftp {
     }
 
 
-    public boolean execute(boolean skipVerification) {
+    public boolean execute(boolean skipVerification, List<String> keywords, List<String> contraKeywords) {
         ChannelSftp channelSftp = new Sftp().getFilesFromSftp();
         Scanner reader = new Scanner(System.in);
 
         try {
-            if (channelSftp == null) throw new JSchException("Failed while connecting to SFTP! \n Check the username, password, host, and port!");
+            if (channelSftp == null)
+                throw new JSchException("Failed while connecting to SFTP! \n Check the username, password, host, and port!");
             System.out.println("Connecting to SFTP...");
             channelSftp.connect();
-            System.out.println("Connected to sftp!");
+            System.out.println("Connected to SFTP!");
 
             System.out.println("Getting mods from the server...");
             List<ChannelSftp.LsEntry> mods = channelSftp.ls("mods").stream().toList();
-
-            List<String> keywords = new TextFileUtils().read(new Keywords().getKeywordFile());
 
             System.out.println(keywords.size() + " keywords loaded.");
             System.out.println(mods.size() + " mods detected.");
 
             List<String> clientSideMods = new ArrayList<>();
-            keywords.forEach(keyword -> mods.forEach(mod -> {
-                if (mod.getFilename().toLowerCase().contains(keyword) && mod.getFilename().toLowerCase().endsWith(".jar")) {
-                    clientSideMods.add(mod.getFilename());
-                }
+            keywords.forEach(keyword -> mods.forEach(modFile -> {
+                String mod = modFile.getFilename().toLowerCase();
+                contraKeywords.forEach(contraKeyword -> {
+                    if (mod.contains(keyword) && !mod.contains(contraKeyword)) {
+                        clientSideMods.add(mod);
+                    }
+                });
             }));
+
             if (!clientSideMods.isEmpty()) {
                 System.out.println(clientSideMods);
                 System.out.println(clientSideMods.size() + " client-side mods detected!");

@@ -7,15 +7,17 @@ import net.paiique.dcs.setup.Sftp;
 import net.paiique.dcs.util.TextFileUtils;
 
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class Main {
-
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
     public static void main(String[] args) throws JSchException, URISyntaxException {
 
         System.out.println("DCS v1");
+        Keywords keywords = new Keywords();
+        List<String> positiveKeywords = keywords.getKeys();
+        List<String> contraKeywords = keywords.getContraKeys();
 
         Scanner reader = new Scanner(System.in);
         System.out.println("(1) - Local");
@@ -24,13 +26,13 @@ public class Main {
 
         switch (reader.nextInt()) {
             case 1:
-                if (new Local().execute(false)) {
+                if (new Local().execute(false, positiveKeywords, contraKeywords)) {
                     System.exit(0);
                 }
                 break;
 
             case 2:
-               if (new Sftp().execute(false)) {
+               if (new Sftp().execute(false, positiveKeywords, contraKeywords)) {
                    System.exit(0);
                }
                break;
