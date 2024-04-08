@@ -164,6 +164,7 @@ public class Sftp {
 
             keywords.forEach(keyword -> finalMods.forEach(modFile -> {
                 String mod = modFile.getFilename().toLowerCase();
+                System.out.println(mod);
                 contraKeywords.forEach(contraKeyword -> {
                     if (mod.contains(keyword) && !mod.contains(contraKeyword)) {
                         clientSideMods.add(mod);
@@ -184,7 +185,7 @@ public class Sftp {
                 if (remove.equals("y") || skipVerification) {
                     remove = "";
 
-                    channelSftp.mkdir("client");
+                    channelSftp.mkdir("mods/client");
                     for (String mod : clientSideMods) {
                         try {
 
