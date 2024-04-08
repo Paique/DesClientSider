@@ -36,9 +36,9 @@ Additionally, it's possible to use the password by setting the PASSWORD arg in t
 
 ## Usage Examples
 
-`java -jar DesClientSider.jar`
+`java -jar DesClientSider-1.2.2.jar`
 
-`java -javaagent:DesClientSider-1.1.2-all.jar -jar server.jar --nogui`
+`java -javaagent:DesClientSider-1.2.2.jar -jar server.jar --nogui`
 
 After selecting the desired options, DCS will analyze the mod files, disable those matching the specified keywords, and move them to the newly created "client" folder.
 
