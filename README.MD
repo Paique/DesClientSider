@@ -1,50 +1,54 @@
+
 # DesClientSider (DCS)
 
-DesClientSider (ou DCS) é uma ferramenta em Java projetada para ajudar  a detectar possíveis mods client-side de forma eficiente, desativando automaticamente aqueles que não são compatíveis com servidores.
+DesClientSider (or DCS) is a Java tool designed to efficiently detect potential client-side mods, automatically disabling those that are not compatible with servers.
 
-O DCS compara os nomes dos arquivos de mods com uma lista de palavras-chave e move os arquivos correspondentes para uma pasta designada, desativando-os efetivamente.
+DCS compares mod file names with a list of keywords and moves corresponding files to a designated folder, effectively disabling them.
 
-## Funcionalidades
+Check out the DCS API project!
+[DesClientSider-API: Simple API for DCS in GoLang](https://github.com/Paique/DesClientSider-API)
 
--   **Desativação Automática de Mods**: O DCS detecta mods client-side incompatíveis com servidores específicos e os desativa automaticamente, movendo-os para uma pasta separada.
--   **Compatibilidade com SFTP**: Os usuários têm a opção de se conectar ao servidor de destino usando SFTP para facilitar o gerenciamento remoto de mods.
--   **Utilização Local**: O DCS também pode ser utilizado localmente, permitindo aos usuários definir manualmente o caminho para a pasta de mods.
+## Features
 
-## Como Usar
-    
-**Localmente**: Se estiver sendo utilizado localmente, basta executar o arquivo JAR do DCS e fornecer o caminho para a pasta de mods quando solicitado.
+- **Automatic Mod Disabling**: DCS detects client-side mods incompatible with specific servers and automatically disables them, moving them to a separate folder.
+- **SFTP Compatibility**: Users have the option to connect to the target server using SFTP to facilitate remote mod management.
+- **Local Usage**: DCS can also be used locally, allowing users to manually set the path to the mods folder.
+
+## How to Use
+
+**Locally**: If used locally, simply run the DCS JAR file and provide the path to the mods folder when prompted.
 ![](https://i.imgur.com/rHdsAV8.png)
 
-**SFTP**: Para utilizar SFTP, forneça as credenciais de conexão.
+**SFTP**: To use SFTP, provide the connection credentials.
 ![](https://i.imgur.com/wv39V3u.png)
-Adicionalmente é possível utilizar a senha definindo o arg PASSWORD no console:
+Additionally, it's possible to use the password by setting the PASSWORD arg in the console:
 ![](https://i.imgur.com/HFP8QfK.png)
 
-**JavaAgent**: Pode ser executado como um JavaAgent juntamente do servidor para que remova os mods antes do servidor iniciar.
+**JavaAgent**: Can be executed as a JavaAgent along with the server to remove mods before the server starts.
 
-## Requisitos do Sistema
+## System Requirements
 
--   Java 17 ou superior.
--   Conexão a internet para requisições a API
+- Java 17 or higher.
+- Internet connection for API requests.
 
-## Instalação
+## Installation
 
-1.  Baixe o arquivo JAR do DCS nas tags.
-2.  Tenha o java instalado
-3.  Execute o arquivo JAR do DCS.
+1. Download the DCS JAR file from the tags.
+2. Have Java installed.
+3. Execute the DCS JAR file.
 
-## Exemplos de Uso
+## Usage Examples
 
-`java -jar DesClientSider.jar` 
+`java -jar DesClientSider-1.2.2.jar`
 
-`java -javaagent:DesClientSider-1.1.2-all.jar -jar server.jar --nogui` 
+`java -javaagent:DesClientSider-1.2.2.jar -jar server.jar --nogui`
 
-Após selecionar as opções desejadas o DCS analisará os arquivos de mods, desativará aqueles que correspondem às palavras-chave especificadas e os moverá para a nova pasta criada "client".
+After selecting the desired options, DCS will analyze the mod files, disable those matching the specified keywords, and move them to the newly created "client" folder.
 
-## Contribuição
+## Contribution
 
-Contribuições são bem-vindas! Se você encontrar bugs ou tiver sugestões de melhorias, sinta-se à vontade para abrir uma issue ou enviar um pull request para o repositório oficial do DCS.
+Contributions are welcome! If you find bugs or have suggestions for improvements, feel free to open an issue or send a pull request to the official DCS repository.
 
-## Licença
+## License
 
-Este projeto é licenciado sob a MIT License.
+This project is licensed under the MIT License.
