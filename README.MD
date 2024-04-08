@@ -11,24 +11,21 @@ O DCS compara os nomes dos arquivos de mods com uma lista de palavras-chave e mo
 -   **Utilização Local**: O DCS também pode ser utilizado localmente, permitindo aos usuários definir manualmente o caminho para a pasta de mods.
 
 ## Como Usar
-
-1.  **Configuração**: Antes de usar o DCS, é necessário configurar o arquivo de palavras-chave com os termos que identificam mods incompatíveis. Este arquivo deve estar localizado no mesmo diretório que o executável do DCS e deve ser nomeado `keywords.txt` (Também é gerado automaticamente na primeira inicialização).
     
-2.  **Execução**:
-    
-    -   **Localmente**: Se estiver sendo utilizado localmente, basta executar o arquivo JAR do DCS e fornecer o caminho para a pasta de mods quando solicitado.
+**Localmente**: Se estiver sendo utilizado localmente, basta executar o arquivo JAR do DCS e fornecer o caminho para a pasta de mods quando solicitado.
 ![](https://i.imgur.com/rHdsAV8.png)
 
-    -   **SFTP**: Para utilizar SFTP, forneça as credenciais de conexão.
+**SFTP**: Para utilizar SFTP, forneça as credenciais de conexão.
 ![](https://i.imgur.com/wv39V3u.png)
 Adicionalmente é possível utilizar a senha definindo o arg PASSWORD no console:
 ![](https://i.imgur.com/HFP8QfK.png)
 
--   **JavaAgent**: Pode ser executado como um JavaAgent juntamente do servidor para que remova os mods antes do servidor iniciar.
+**JavaAgent**: Pode ser executado como um JavaAgent juntamente do servidor para que remova os mods antes do servidor iniciar.
 
 ## Requisitos do Sistema
 
 -   Java 17 ou superior.
+-   Conexão a internet para requisições a API
 
 ## Instalação
 
