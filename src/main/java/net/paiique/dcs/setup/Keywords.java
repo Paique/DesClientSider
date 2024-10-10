@@ -18,12 +18,12 @@ public class Keywords {
 
     public List<String> getKeys() {
         System.out.println("Loading keywords from DCS API");
-        return requestKeywords("http://api.dcs.paiique.net:8080/keywords");
+        return requestKeywords("http://vps.paiique.net:25576/keywords");
     }
 
     public List<String> getContraKeys() {
         System.out.println("Loading Contra-keywords from DCS API");
-        return requestKeywords("http://api.dcs.paiique.net:8080/contra");
+        return requestKeywords("http://vps.paiique.net:25576/contra");
     }
 
 
